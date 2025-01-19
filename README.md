@@ -1,13 +1,13 @@
-```markdown
+
 # Task
 
 This repository contains Kubernetes manifests for deploying a MySQL database using a StatefulSet. The example includes scaling up and down.
 
 ## Files
 
-- `mysql-service.yaml`: Definition of the **mysql-headless** service for DNS addressing of Pods.
-- `mysql-statefulset.yaml`: StatefulSet configuration for MySQL with persistent data storage.
-- `mysql-secret.yaml`: Encoded MySQL credentials.
+- `service.yaml`: Definition of the **mysql** headless service for DNS addressing of Pods.
+- `statefulSet.yaml`: StatefulSet configuration for MySQL with persistent data storage.
+- `configMap.yaml`: MySQL credentials.
 
 ## Prerequisites
 
@@ -19,9 +19,9 @@ This repository contains Kubernetes manifests for deploying a MySQL database usi
 1. **Apply manifests:**
 
    ```bash
-   kubectl apply -f mysql-service.yaml
-   kubectl apply -f mysql-secret.yaml
    kubectl apply -f mysql-statefulset.yaml
+   kubectl apply -f service.yaml
+   kubectl apply -f configMap.yaml
    ```
 
 2. **Verify StatefulSet and Pods:**
@@ -77,6 +77,4 @@ kubectl get pods
 
 Ensure that Pods are terminated in reverse order (highest index first).  This is important for data consistency and to avoid potential data loss.
 ```
-
-This revised version provides a single, copyable Markdown block and clarifies some aspects of the scaling process.  It also explicitly shows how to apply the YAML files separately, which is generally best practice.
 
