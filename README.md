@@ -3,6 +3,16 @@
 
 This repository contains Kubernetes manifests for deploying a MySQL database using a StatefulSet. The example includes scaling up and down.
 
+**Key Difference between StatefulSet and Deployment (Scaling Up and Down):**
+
+* **StatefulSet:** Guarantees ordered and predictable scaling.  When scaling *up*, new Pods are created sequentially with increasing ordinal indexes (e.g., `mysql-0`, `mysql-1`, `mysql-2`, etc.).  When scaling *down*, Pods are terminated in reverse order, starting with the highest index.  This ensures data consistency and predictable behavior, critical for stateful applications like databases.
+
+* **Deployment:**  Does not guarantee any specific order during scaling. When scaling *up* or *down*, Pods are created or terminated without a predictable sequence.  This is suitable for stateless applications where the order of instances doesn't matter.  Deployments prioritize speed and availability over ordered operations.  A Deployment might terminate `pod-xyz1` before `pod-abc0` regardless of their creation time.
+
+
+In short, use a StatefulSet when you need predictable, ordered scaling operations, vital for stateful applications.  Use a Deployment for stateless applications where scaling order is not a concern.
+
+
 ## Files
 
 - `service.yaml`: Definition of the **mysql** headless service for DNS addressing of Pods.
@@ -19,7 +29,7 @@ This repository contains Kubernetes manifests for deploying a MySQL database usi
 1. **Apply manifests:**
 
    ```bash
-   kubectl apply -f mysql-statefulset.yaml
+   kubectl apply -f statefulSet.yaml
    kubectl apply -f service.yaml
    kubectl apply -f configMap.yaml
    ```
@@ -76,5 +86,4 @@ kubectl get pods
 ![alt text](image-4.png)
 
 Ensure that Pods are terminated in reverse order (highest index first).  This is important for data consistency and to avoid potential data loss.
-```
 
